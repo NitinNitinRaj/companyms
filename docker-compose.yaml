@@ -36,6 +36,8 @@ services:
     container_name: zipkin_container
     ports:
       - "9411:9411"
+    networks:
+      - postgres_network
 
 networks:
   postgres_network:
