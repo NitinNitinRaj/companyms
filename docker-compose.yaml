@@ -43,7 +43,7 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5762:5752" #rabbitmq port
+      - "5672:5672" #rabbitmq port
       - "15672:15672" #rabbitmq management port
     networks:
       - postgres_network
