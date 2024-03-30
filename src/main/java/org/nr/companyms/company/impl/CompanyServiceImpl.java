@@ -4,6 +4,7 @@ package org.nr.companyms.company.impl;
 import org.nr.companyms.company.Company;
 import org.nr.companyms.company.CompanyRepository;
 import org.nr.companyms.company.CompanyService;
+import org.nr.companyms.company.dto.ReviewMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,13 +38,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public void updateCompanyRating(ReviewMessage reviewMessage) {
+        System.out.println(reviewMessage);
+    }
+
+    @Override
     public void createCompany(Company company) {
         companyRepository.save(company);
     }
 
     @Override
     public boolean deleteCompanyById(Long id) {
-        if(companyRepository.existsById(id)) {
+        if (companyRepository.existsById(id)) {
             companyRepository.deleteById(id);
             return true;
         } else {
