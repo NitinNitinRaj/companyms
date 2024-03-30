@@ -1,9 +1,11 @@
 package org.nr.companyms.company.impl;
 
 
+import jakarta.ws.rs.NotFoundException;
 import org.nr.companyms.company.Company;
 import org.nr.companyms.company.CompanyRepository;
 import org.nr.companyms.company.CompanyService;
+import org.nr.companyms.company.clients.ReviewClient;
 import org.nr.companyms.company.dto.ReviewMessage;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ import java.util.Optional;
 @Service
 public class CompanyServiceImpl implements CompanyService {
     private CompanyRepository companyRepository;
+    private ReviewClient reviewClient;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, ReviewClient reviewClient) {
         this.companyRepository = companyRepository;
+        this.reviewClient = reviewClient;
     }
 
     @Override
@@ -39,7 +43,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void updateCompanyRating(ReviewMessage reviewMessage) {
-        System.out.println(reviewMessage);
+        Double averageRatingForCompany = reviewClient.getAverageRatingForCompany(reviewMessage.getCompanyId());
+        Company company = companyRepository.findById(reviewMessage.getCompanyId()).orElseThrow(() -> new NotFoundException("Comapny not found: " + reviewMessage.getCompanyId()));
+        company.setRating(averageRatingForCompany);
+        companyRepository.save(company);
     }
 
     @Override
